@@ -17,6 +17,8 @@ import type { NataliaAnalysis } from "@/lib/mediapipe/natalia-method";
 import type { FaceLandmarks } from "@/lib/mediapipe/face-landmarker";
 import type { FaceMetrics } from "@/lib/mediapipe/metrics";
 import { ScanFace, Upload } from "lucide-react";
+import { useProfileStore } from "@/stores/profile-store";
+import { useGalleryStore } from "@/stores/gallery-store";
 
 type ScannerState = "idle" | "live" | "analyzing" | "result";
 
@@ -29,6 +31,8 @@ export default function ScannerPage() {
   const [recommendation, setRecommendation] = useState<FlowRecommendation | null>(null);
   const [nataliaAnalysis, setNataliaAnalysis] = useState<NataliaAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { addXP } = useProfileStore();
+  const { addItem: addGalleryItem } = useGalleryStore();
 
   // Processa os landmarks (vindo da camera ao vivo ou de upload)
   const processLandmarks = useCallback((faceLandmarks: FaceLandmarks) => {
@@ -54,8 +58,9 @@ export default function ScannerPage() {
     setImageDimensions({ width, height });
     setLandmarks(faceLandmarks);
     processLandmarks(faceLandmarks);
+    addXP(50, "analysis");
     setState("result");
-  }, [processLandmarks]);
+  }, [processLandmarks, addXP]);
 
   // Callback de upload de foto
   const handlePhotoUpload = useCallback(async (file: File) => {

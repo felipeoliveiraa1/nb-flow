@@ -7,11 +7,13 @@ import { applyWatermark } from "@/lib/watermark";
 import { generateStoryImage } from "@/lib/stories";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X, Download, Share2, Trash2, ImagePlus, ChevronLeft } from "lucide-react";
+import { useProfileStore } from "@/stores/profile-store";
 
 type ViewState = "list" | "add" | "detail";
 
 export default function GalleryPage() {
   const { items, addItem, removeItem } = useGalleryStore();
+  const { addXP } = useProfileStore();
   const [view, setView] = useState<ViewState>("list");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [generatingStory, setGeneratingStory] = useState(false);
@@ -48,6 +50,7 @@ export default function GalleryPage() {
       flowScore: Math.round(70 + Math.random() * 25),
     });
 
+    addXP(30, "photo");
     setClientName("");
     setBeforeUrl(null);
     setAfterUrl(null);

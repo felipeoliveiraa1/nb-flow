@@ -4,6 +4,7 @@ import { useParams, useRouter, redirect } from "next/navigation";
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ScanFace, RotateCcw, Check, AlertCircle, Pen, Droplets, Sparkles, Eraser, Sun, type LucideIcon } from "lucide-react";
+import { useProfileStore } from "@/stores/profile-store";
 import { FlowCamera } from "@/components/scanner/FlowCamera";
 import type { FaceLandmarks } from "@/lib/mediapipe/face-landmarker";
 import { analyzeLips, type LipAnalysis } from "@/lib/mediapipe/lip-analysis";
@@ -68,6 +69,7 @@ export default function TreatmentScannerPage() {
 
   const [view, setView] = useState<ViewState>("info");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { addXP } = useProfileStore();
   const [lipResult, setLipResult] = useState<LipAnalysis | null>(null);
   const [skinResult, setSkinResult] = useState<SkinAnalysis | null>(null);
   const [pigmentResult, setPigmentResult] = useState<PigmentAnalysis | null>(null);
@@ -120,9 +122,10 @@ export default function TreatmentScannerPage() {
         }
       }
 
+      addXP(50, "analysis");
       setView("result");
     };
-  }, [treatment]);
+  }, [treatment, addXP]);
 
   const handleReset = useCallback(() => {
     if (imageUrl) URL.revokeObjectURL(imageUrl);

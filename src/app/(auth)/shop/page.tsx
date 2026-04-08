@@ -1,6 +1,17 @@
+"use client";
+
 import { Palette, Sparkles, Droplets, type LucideIcon } from "lucide-react";
+import { useProfileStore } from "@/stores/profile-store";
 
 export default function ShopPage() {
+  const { addXP } = useProfileStore();
+
+  function handleOrder(productName: string) {
+    addXP(20, "purchase");
+    const msg = encodeURIComponent(`Ola! Gostaria de pedir: ${productName}`);
+    window.open(`https://wa.me/5511999999999?text=${msg}`, "_blank");
+  }
+
   return (
     <div className="px-5 pt-12">
       <h1 className="font-[family-name:var(--font-playfair)] text-2xl font-semibold text-nb-dark">
@@ -28,33 +39,25 @@ export default function ShopPage() {
                 R$ {product.price}
               </p>
             </div>
-            <button className="rounded-full bg-nb-pink px-4 py-2 text-xs font-medium text-white transition-all active:scale-95">
+            <button
+              onClick={() => handleOrder(product.name)}
+              className="rounded-full bg-nb-pink px-4 py-2 text-xs font-medium text-white transition-all active:scale-95"
+            >
               Pedir
             </button>
           </div>
         ))}
       </div>
+
+      <p className="mt-6 text-center text-xs text-nb-gray-warm">
+        Voce sera direcionada para o WhatsApp
+      </p>
     </div>
   );
 }
 
 const products: { name: string; description: string; price: string; icon: LucideIcon }[] = [
-  {
-    name: "Kit Pigmento Flow",
-    description: "5 tons essenciais",
-    price: "189,90",
-    icon: Palette,
-  },
-  {
-    name: "Agulha Nano Flow",
-    description: "Caixa c/ 20 unidades",
-    price: "79,90",
-    icon: Sparkles,
-  },
-  {
-    name: "Creme Cicatrizante NB",
-    description: "Pos-procedimento 30g",
-    price: "49,90",
-    icon: Droplets,
-  },
+  { name: "Kit Pigmento Flow", description: "5 tons essenciais", price: "189,90", icon: Palette },
+  { name: "Agulha Nano Flow", description: "Caixa c/ 20 unidades", price: "79,90", icon: Sparkles },
+  { name: "Creme Cicatrizante NB", description: "Pos-procedimento 30g", price: "49,90", icon: Droplets },
 ];

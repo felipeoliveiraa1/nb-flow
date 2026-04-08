@@ -1,0 +1,22 @@
+{
+  "name": "NB Flow",
+  "short_name": "NB Flow",
+  "description": "Sistema de performance para Angels - Natalia Beauty",
+  "start_url": "/home",
+  "display": "standalone",
+  "background_color": "#FD7F99",
+  "theme_color": "#FD7F99",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -136,8 +136,8 @@ export default function FeedPage() {
           </motion.div>
         ))}
 
-        {/* Demo posts (quando nao tem conteudo real) */}
-        {!hasContent && DEMO_POSTS.map((post, i) => (
+        {/* Demo posts (sempre mostram para o feed parecer ativo) */}
+        {DEMO_POSTS.map((post, i) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
@@ -155,6 +155,17 @@ export default function FeedPage() {
                 <span className="text-xs text-nb-gray-warm">{post.timeAgo}</span>
               </div>
             </div>
+
+            {post.type === "photo" && post.imageUrl && (
+              <div className="relative">
+                <img src={post.imageUrl} alt="Post" className="w-full aspect-square object-cover" />
+                {post.score && (
+                  <div className="absolute bottom-3 right-3 rounded-full bg-nb-pink px-2.5 py-1 text-xs font-bold text-white shadow-md">
+                    Flow {post.score}
+                  </div>
+                )}
+              </div>
+            )}
 
             {post.type === "analysis" && (
               <div className="mx-5 rounded-2xl bg-gradient-to-br from-nb-pink to-nb-pink-dark p-5">
@@ -220,27 +231,125 @@ const DEMO_USERS = [
   { name: "Ana", avatar: "https://i.pravatar.cc/150?img=16" },
 ];
 
-const DEMO_POSTS = [
+const DEMO_POSTS: {
+  id: string; author: string; avatar: string; level: string; timeAgo: string;
+  type: "photo" | "analysis" | "achievement"; imageUrl?: string; score?: number;
+  achievement?: string; caption: string; likes: number;
+}[] = [
   {
     id: "demo-1",
     author: "Fernanda Silva",
     avatar: "https://i.pravatar.cc/100?img=1",
     level: "Elite",
-    timeAgo: "2h",
-    type: "analysis" as const,
-    score: 92,
-    caption: "Acabei de usar o Scanner IA e o diagnostico foi certeiro!",
-    likes: 47,
+    timeAgo: "1h",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&h=600&fit=crop&crop=face",
+    score: 94,
+    caption: "Resultado Flow Brows de hoje! Cliente saiu amando o arco natural. Tecnica de elevacao no ponto 66 funcionou perfeita.",
+    likes: 67,
   },
   {
     id: "demo-2",
+    author: "Juliana Mendes",
+    avatar: "https://i.pravatar.cc/100?img=5",
+    level: "Pro",
+    timeAgo: "3h",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1588528402605-3e7f9a090c4a?w=600&h=600&fit=crop&crop=face",
+    score: 88,
+    caption: "Antes e depois da correcao de simetria. Sobrancelha direita estava 4% mais baixa. Agora equilibrada!",
+    likes: 43,
+  },
+  {
+    id: "demo-3",
     author: "Camila Rodrigues",
     avatar: "https://i.pravatar.cc/100?img=9",
     level: "Pro",
+    timeAgo: "5h",
+    type: "analysis",
+    score: 91,
+    caption: "Scanner detectou arco a 7.8% - quase perfeito no padrao Natalia! Cada dia mais precisa nas medicoes.",
+    likes: 31,
+  },
+  {
+    id: "demo-4",
+    author: "Ana Paula Costa",
+    avatar: "https://i.pravatar.cc/100?img=16",
+    level: "Iniciante",
+    timeAgo: "6h",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600&h=600&fit=crop&crop=face",
+    score: 85,
+    caption: "Minha 5a cliente com o metodo Flow! O gradiente 40-100-70 faz TODA diferenca. Resultado super natural.",
+    likes: 28,
+  },
+  {
+    id: "demo-5",
+    author: "Fernanda Silva",
+    avatar: "https://i.pravatar.cc/100?img=1",
+    level: "Elite",
     timeAgo: "8h",
-    type: "achievement" as const,
+    type: "achievement",
+    achievement: "50 Analises Flow",
+    caption: "Marco de 50 analises com o Scanner IA! A tecnologia mudou minha forma de trabalhar. Obrigada Natalia!",
+    likes: 112,
+  },
+  {
+    id: "demo-6",
+    author: "Beatriz Lima",
+    avatar: "https://i.pravatar.cc/100?img=20",
+    level: "Iniciante",
+    timeAgo: "10h",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1596704017254-9759879bfa63?w=600&h=600&fit=crop&crop=face",
+    caption: "Flow Lips na cliente! Arco de cupido a 132 graus - dentro do ideal. Tecnica borda infinita ficou incrivel.",
+    score: 89,
+    likes: 35,
+  },
+  {
+    id: "demo-7",
+    author: "Juliana Mendes",
+    avatar: "https://i.pravatar.cc/100?img=5",
+    level: "Pro",
+    timeAgo: "12h",
+    type: "analysis",
+    score: 86,
+    caption: "Flow Peel detectou zona T oleosa e manchas nas bochechas. Recomendou peeling com carvao ativado. Vamos tratar!",
+    likes: 22,
+  },
+  {
+    id: "demo-8",
+    author: "Ana Paula Costa",
+    avatar: "https://i.pravatar.cc/100?img=16",
+    level: "Iniciante",
+    timeAgo: "1d",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1614289371518-722f2615943d?w=600&h=600&fit=crop&crop=face",
+    score: 82,
+    caption: "Primeira vez usando Flow Removal. Detectou pigmento marrom com 45% de densidade. Estimativa de 4 sessoes. Impressionante!",
+    likes: 19,
+  },
+  {
+    id: "demo-9",
+    author: "Camila Rodrigues",
+    avatar: "https://i.pravatar.cc/100?img=9",
+    level: "Pro",
+    timeAgo: "1d",
+    type: "achievement",
     achievement: "Nivel Pro - 500 XP",
-    caption: "Acabei de subir para o nivel Pro! Obrigada Natalia pela metodologia!",
+    caption: "Subi para Pro! Ja fiz 15 analises e 8 fotos antes/depois. O app e viciante!",
     likes: 83,
+  },
+  {
+    id: "demo-10",
+    author: "Fernanda Silva",
+    avatar: "https://i.pravatar.cc/100?img=1",
+    level: "Elite",
+    timeAgo: "2d",
+    type: "photo",
+    imageUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&h=600&fit=crop&crop=face",
+    score: 96,
+    caption: "Score 96! Meu maior ate agora. Simetria quase perfeita, arco a 8.1%, angulo final a 12 graus. Padrao Natalia puro!",
+    likes: 156,
   },
 ];
